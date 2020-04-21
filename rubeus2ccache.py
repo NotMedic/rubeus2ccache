@@ -11,6 +11,7 @@ from utils import logging
 from utils.krbcredccache import KrbCredCCache
 from pyasn1.codec.der import decoder, encoder
 from impacket.krb5.asn1 import KRB_CRED, EncKrbCredPart
+from pathlib import Path
 
 # It took Dirkjan like 10 minutes to write this function... Let that sink in...
 def makeccache(rb64):
@@ -105,4 +106,8 @@ for t in tickets:
         ccache.saveFile("./output/" + ccachename)
         savedtickets = savedtickets + 1
 
+if os.path.exists("./processed") == False:
+    os.mkdir("./processed")
+
+Path(args.inputfile).rename("./processed/" + args.inputfile)
 msg.success("Processed " + str(len(tickets)) + " Tickets. " + str(savedtickets) + " ccache files saved to ./output")
